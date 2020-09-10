@@ -5,9 +5,16 @@
 
 #define ERR_LEN 1024
 #define TEXT_LEN 8848
+
+#ifdef _WIN64
+#define DLL_PATH _T("..\\..\\Release\\excel-win-64.dll")
+#else
+#define DLL_PATH _T("..\\..\\Release\\excel-win-32.dll")
+#endif
+
 int main()
 {
-	HMODULE module = LoadLibrary(_T("..\\..\\Release\\excel.dll"));
+	HMODULE module = LoadLibrary(DLL_PATH);
 	if (module == NULL)
 	{
 		printf("Load excel.dll failed\n");
