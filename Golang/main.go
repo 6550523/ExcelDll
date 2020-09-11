@@ -10,11 +10,44 @@ import "C"
 import (
 	"fmt"
 	"github.com/tealeg/xlsx"
+	"unsafe"
 )
 
 //export OpenFile
-func OpenFile(input, output *C.char) {
-	xlFile, err = xlsx.OpenFile(C.GoString(input))
+func OpenFile(fileName, output *C.char) {
+	xlFile, err = xlsx.OpenFile(C.GoString(fileName))
+	if err != nil {
+		fmt.Println(err.Error())
+		C.strcpy(output, C.CString(err.Error()))
+		return
+	}
+}
+
+//export OpenFileWithRowLimit
+func OpenFileWithRowLimit(fileName *C.char, rowLimit C.int, output *C.char) {
+	xlFile, err = xlsx.OpenFileWithRowLimit(C.GoString(fileName), int(rowLimit))
+	if err != nil {
+		fmt.Println(err.Error())
+		C.strcpy(output, C.CString(err.Error()))
+		return
+	}
+}
+
+//export OpenBinary
+func OpenBinary(bs *C.char, size C.int, output *C.char) {
+	b := C.GoBytes(unsafe.Pointer(bs), size)
+	xlFile, err = xlsx.OpenBinary(b)
+	if err != nil {
+		fmt.Println(err.Error())
+		C.strcpy(output, C.CString(err.Error()))
+		return
+	}
+}
+
+//export OpenBinaryWithRowLimit
+func OpenBinaryWithRowLimit(bs *C.char, size C.int, rowLimit C.int, output *C.char) {
+	b := C.GoBytes(unsafe.Pointer(bs), size)
+	xlFile, err = xlsx.OpenBinaryWithRowLimit(b, int(rowLimit))
 	if err != nil {
 		fmt.Println(err.Error())
 		C.strcpy(output, C.CString(err.Error()))

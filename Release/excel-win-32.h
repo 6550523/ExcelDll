@@ -78,6 +78,12 @@ extern "C" {
 
 extern void OpenFile(char* p0, char* p1);
 
+extern void OpenFileWithRowLimit(char* p0, int p1, char* p2);
+
+extern void OpenBinary(char* p0, int p1, char* p2);
+
+extern void OpenBinaryWithRowLimit(char* p0, int p1, int p2, char* p3);
+
 extern void NewFile();
 
 extern void SaveFile(char* p0);
